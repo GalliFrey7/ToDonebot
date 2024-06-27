@@ -52,7 +52,6 @@ async def show_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(menu_text)
 
 def main() -> None:
-    # Load the token from the .env file
     token = config('TELEGRAM_API_TOKEN')
     application = ApplicationBuilder().token(token).build()
 
