@@ -1,6 +1,10 @@
-from decouple import config
+from dotenv import load_dotenv
+import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+# Load environment variables from .env file
+load_dotenv()
 
 # In-memory storage for tasks
 tasks = []
@@ -52,7 +56,11 @@ async def show_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(menu_text)
 
 def main() -> None:
-    token = config('TELEGRAM_API_TOKEN')
+    # Load the token from the .env file
+    token = os.getenv('TELEGRAM_API_TOKEN')
+    if not token:
+        raise ValueError("No TELEGRAM_API_TOKEN provided. Please set the TELEGRAM_API_TOKEN environment variable.")
+    
     application = ApplicationBuilder().token(token).build()
 
     application.add_handler(CommandHandler("start", start))
